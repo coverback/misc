@@ -1,9 +1,9 @@
 # Name all the source files here
 # If you even add a new source file to the project, make sure you add it here too
-SOURCES   := analysis.cpp capture.cpp main.cpp presentation.cpp
+SOURCES   := main.cpp
 
 # Filename of the actual executable file
-TARGET    := iwb
+TARGET    := executable_name
 
 # Generate list of object files. .o is added instead of files' normal
 # suffixes, like .cc or .cpp. Each source file will be compiled into
@@ -24,18 +24,17 @@ DEBUG     := -g
 
 # Compilation and include flags
 # Use our include-dir first and then specify other dirs in IFLAGS.
-# Note, there is no need to include opencv folders, as all files
-# should use <opencv2/filename.h> format relative to /usr/include
 IDIR      := include
 IFLAGS    := -I./$(IDIR)
 CFLAGS    := -Wall -Wextra $(DEBUG) $(IFLAGS)
 
-# Linking flags and variables for some libs used in linking
-# pkg-config returns all opencv libs which opencv installatoion has
-# provided in a pkg file opencv.pc in /usr/lib/pkgconfig or similar.
+# Linking flags and variables for some libs used in linking.
+# pkg-config returns all related libs which library installation has
+# provided in a pkg file lib_name.pc in /usr/lib/pkgconfig or similar.
 # This way is significantly more reliable than manually adding libs.
+# If pkgconfig file are not provided, add -lname to LIBS.
 LIBS      :=
-LIBCONFIG := $(shell pkg-config --libs opencv)
+LIBCONFIG := $(shell pkg-config --libs lib_name)
 LDFLAGS   := $(LIBS) $(LIBCONFIG)
 
 
