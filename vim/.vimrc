@@ -19,11 +19,6 @@ set softtabstop=4
 " set the search scan to wrap lines
 set wrapscan
 
-" set the search scan so that it ignores case when the search is all lower
-" case but recognizes uppercase if it's specified
-set ignorecase
-set smartcase
-
 " set the forward slash to be the slash of note.  Backslashes suck
 set shellslash
 
@@ -70,7 +65,7 @@ set mousehide
 
 " When the page starts to scroll, keep the cursor 8 lines from the top and 8
 " lines from the bottom
-set scrolloff=8
+set scrolloff=4
 
 
 " Disable encryption (:X)
@@ -136,6 +131,9 @@ noremap <silent> <C-8> <C-W>+
 noremap <silent> <C-9> <C-W>+
 noremap <silent> <C-0> <C-W>>
 
+" Maps for tabs
+noremap <silent> <C-t> :tabnew<CR>
+
 " Map CTRL-E to do what ',' used to do
 nnoremap <c-e> ,
 vnoremap <c-e> ,
@@ -146,12 +144,20 @@ nmap <silent> ^ :setl hls<CR>:let @/="<C-r><C-w>"<CR>
 " Syntax coloring lines that are too long just slows down the world
 set synmaxcol=2048
 
+" Show trailing whitepace and spaces before a tab:
 highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/
+
+
+"-----------------------------------------------------------------------------
+" Nerd Tree stuff
+"-----------------------------------------------------------------------------
+
+nmap <silent> <F2> :NERDTreeToggle<CR>
+
+" Don't display these kinds of files
+let NERDTreeIgnore=[ '\.obj$',
+            \ '^moc']
 
 
 "-----------------------------------------------------------------------------
@@ -160,25 +166,33 @@ autocmd BufWinLeave * call clearmatches()
 colorscheme desert
 
 if has("gui_running")
-    " To set size correctly, use e.g. Consolas \11
-    set guifont=Consolas
-    "if !exists("g:vimrcloaded")
+    if has('gui_gtk2')
+        set gfn=Consolas\ 10
+    elseif has('gui_photon')
+        set gfn=Consolas:s10
+    else
+        " not previous two (hopefully Windows)
+        set gfn=Consolas:h11
+    endif
+
+    " set the gui options the way I like
+    set guioptions=ac
+
+    " Set up the gui cursor to look nice
+    set guicursor=n-v-c:block-Cursor-blinkon0
+    set guicursor+=ve:ver35-Cursor
+    set guicursor+=o:hor50-Cursor
+    set guicursor+=i-ci:ver25-Cursor
+    set guicursor+=r-cr:hor20-Cursor
+    set guicursor+=sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
+
+    " Flag needed to avoid window move on vimrc reload
+    if !exists("g:vimrcloaded")
         winpos 10 38
         set lines=50 columns=145
 
-        " set the gui options the way I like
-        set guioptions=ac
-
-        " Set up the gui cursor to look nice
-        set guicursor=n-v-c:block-Cursor-blinkon0
-        set guicursor+=ve:ver35-Cursor
-        set guicursor+=o:hor50-Cursor
-        set guicursor+=i-ci:ver25-Cursor
-        set guicursor+=r-cr:hor20-Cursor
-        set guicursor+=sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
-
-    "    let g:vimrcloaded = 1
-    "endif
+        let g:vimrcloaded = 1
+    endif
 endif
 :nohls
 
