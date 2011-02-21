@@ -154,10 +154,11 @@ autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/
 "-----------------------------------------------------------------------------
 
 nmap <silent> <F2> :NERDTreeToggle<CR>
+nmap <silent> <S-F2> :NERDTreeClose<CR>
 
 " Don't display these kinds of files
-let NERDTreeIgnore=[ '\.obj$',
-            \ '^moc']
+let NERDTreeIgnore=[ '\.obj$', '\.deb$',
+            \ '^moc', '\.o$', '\.so[0-9.]*$' ]
 
 
 "-----------------------------------------------------------------------------
