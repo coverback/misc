@@ -22,7 +22,7 @@ for filename in filelist:
 	blamelist = commands.getoutput("git blame " + filename).split('\n')
 	for line in blamelist:
 		#print line
-		components = re.findall("(\^?[0-9A-Fa-f]{7,8}).+\((.*) +(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}) +[0-9]+\) (.*)", line)[0]
+		components = re.findall("(\^?[0-9A-Fa-f]{7,8}).+\((.*) +(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} (\+|-)\d{4}) +[0-9]+\) (.*)", line)[0]
 		if not re.match("^[ \t]*$", components[3]):
 			#print components[1]
 			name = components[1].strip()
